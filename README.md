@@ -2,10 +2,10 @@
 
 Install dependencies:
 ```
- $ npm install
+$ npm install
  ```
 
 Run the app:
  ```
- $ DEBUG=instagram-clone-node:* npm start
+$ npm run serverstart
 ```
