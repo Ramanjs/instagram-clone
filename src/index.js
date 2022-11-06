@@ -8,7 +8,7 @@ import SignUp from './pages/SignUp';
 import Home from './pages/Home';
 import User from './pages/User';
 import './index.css';
-import { store } from './redux/store';
+import store from './redux/store';
 import { Provider } from 'react-redux';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
