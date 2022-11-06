@@ -16,6 +16,7 @@ This project is made according to the jamstack technique of making web apps.
 4. Feed: posts of people user follows
 5. Notifications tab
 7. Posts:
+  * Description
   * Photo(s)
   * Comments
   * Tag people in comments ??
