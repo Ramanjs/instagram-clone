@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import instagram from '../images/instagram.png';
-import { Link } from 'react-router-dom';
+import { Navigate, Link } from 'react-router-dom';
 import { login } from '../redux/user';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 const Login = () => {
+  const loggedIn = useSelector(state => state.user.loggedIn);
   const dispatch = useDispatch();
 
   const [userName, setUserName] = useState('')
@@ -24,6 +25,10 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(login());
+  }
+
+  if (loggedIn) {
+    return <Navigate to="/" replace />
   }
 
   return (

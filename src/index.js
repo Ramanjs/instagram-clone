@@ -16,19 +16,27 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <Navbar />
         <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route 
             path="/" 
             element={
               <RequireAuth>
+                <Navbar />
                 <Home />
               </RequireAuth>
             } 
           />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/user" element={<User />} />
+          <Route
+            path="/user"
+            element={
+              <RequireAuth>
+                <Navbar />
+                <User />
+              </RequireAuth>
+            }
+         />
         </Routes>
       </BrowserRouter>
     </Provider>
