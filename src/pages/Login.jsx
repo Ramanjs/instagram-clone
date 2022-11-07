@@ -24,7 +24,10 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(login());
+    dispatch(login({
+      username: userName,
+      password: passwd
+    }));
   }
 
   if (loggedIn) {
