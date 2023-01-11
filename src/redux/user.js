@@ -1,15 +1,22 @@
-import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit';
-import { baseUrl } from '../baseUrl';
-import { dispatch } from '@reduxjs/toolkit';
-import {act} from 'react-dom/test-utils';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import baseUrl from '../baseUrl';
+import Cookies from 'js-cookie';
 
 const initialState = {
   loggedIn: false,
-  token: '',
+  profileLoaded: false,
+  token: Cookies.get('instagram_token'),
+  handle: Cookies.get('instagram_handle'),
   name: '',
-  handle: '',
   bio: '',
+  posts: [],
+  followers: [],
+  following: []
 };
+
+if (initialState.token && initialState.handle) {
+  initialState.loggedIn = true;
+}
 
 export const signup = createAsyncThunk('user', async (creds, thunkAPI) => {
   fetch(baseUrl + '/auth/signup', {
@@ -54,11 +61,33 @@ export const login = createAsyncThunk('user', async (creds, thunkAPI) => {
     })
     .then(response => response.json())
     .then(response => {
-      console.log(response);
       thunkAPI.dispatch(loadToken(response.token))
       thunkAPI.dispatch(loggedIn(true))
+      thunkAPI.dispatch(setHandle(response.handle))
     })
 });
+
+export const fetchUserDetails = createAsyncThunk('user', (creds, thunkAPI) => {
+  fetch(baseUrl + '/users/' + creds.handle, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + creds.token
+    },
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw Error('ofo');
+      }
+      return response;
+    })
+    .then(response => response.json())
+    .then(response => {
+      thunkAPI.dispatch(setName(response.data.name));
+      thunkAPI.dispatch(setBio(response.data.bio));
+      thunkAPI.dispatch(setProfileLoaded(true));
+    })
+})
 
 export const userSlice = createSlice({
   name: 'user',
@@ -69,10 +98,24 @@ export const userSlice = createSlice({
     },
     loadToken: (state, action) => {
       state.token = action.payload;
+      Cookies.set('instagram_token', action.payload);
+    },
+    setHandle: (state, action) => {
+      state.handle = action.payload;
+      Cookies.set('instagram_handle', action.payload);
+    },
+    setName: (state, action) => {
+      state.name = action.payload
+    },
+    setBio: (state, action) => {
+      state.bio = action.payload
+    },
+    setProfileLoaded: (state, action) => {
+      state.profileLoaded = action.payload;
     }
   },
 })
 
-export const { loggedIn, loadToken } = userSlice.actions;
+export const { loggedIn, loadToken, setHandle, setName, setBio, setProfileLoaded } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -6,7 +6,8 @@ import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Home from './pages/Home';
-import User from './pages/User';
+import Profile from './pages/Profile';
+import EditProfile from './pages/EditProfile';
 import './index.css';
 import store from './redux/store';
 import { Provider } from 'react-redux';
@@ -29,11 +30,20 @@ root.render(
             } 
           />
           <Route
-            path="/user"
+            path="/profile"
             element={
               <RequireAuth>
                 <Navbar />
-                <User />
+                <Profile />
+              </RequireAuth>
+            }
+         />
+          <Route
+            path="/profile/edit"
+            element={
+              <RequireAuth>
+                <Navbar />
+                <EditProfile />
               </RequireAuth>
             }
          />

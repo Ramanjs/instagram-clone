@@ -11,7 +11,7 @@ const Post = () => {
       </div>
 
       {/* Post Image */}
-      <img className="w-full h-96 object-cover" />
+      <img className="w-full h-96 object-cover" alt="post"/>
 
       {/* Post Meta*/}
       <div className="w-full flex flex-col p-2">
