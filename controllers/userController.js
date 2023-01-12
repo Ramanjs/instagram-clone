@@ -127,3 +127,25 @@ exports.editUserProfile = async (req, res) => {
     message: id,
   })
 }
+
+exports.getImage = (req, res) => {
+  const id = req.params.id
+  if (!id || id === undefined) {
+    res.status(400).json({
+      success: false,
+      message: 'No image id'
+    })
+  }
+
+  const _id = new mongoose.Types.ObjectId(id);
+
+  gfs.find({ _id }).toArray((err, files) => {
+    if (!files || files.length === 0) {
+      res.status(400).json({
+        success: false,
+        message: 'No files exist'
+      })
+    }
+    gfs.openDownloadStream(_id).pipe(res)
+  })
+}
