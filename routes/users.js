@@ -5,6 +5,6 @@ const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
 
 router.get('/:handle', userController.userDetail);
-router.post('/:handle/profile', authController.verifyToken, userController.editUserProfile);
+router.post('/:handle/profile', authController.verifyToken, userController.uploadMiddleware, userController.editUserProfile);
 
 module.exports = router;
