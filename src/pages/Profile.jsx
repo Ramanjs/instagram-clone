@@ -2,13 +2,14 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link, redirect } from 'react-router-dom';
 const Profile = () => {
+  const pfp = useSelector(state => state.user.pfp)
 
   const user = useSelector(state => state.user);
   return (
     <div className="w-full flex flex-col py-2">
       <h1 className="text-2xl font-semibold px-4">{user.handle}</h1>
       <div className="w-full flex justify-between items-center mt-8 px-4">
-        <img className="w-16 h-16 border-none rounded-full bg-gray-100" alt="pfp"/>
+        <img className="w-16 h-16 border-none rounded-full bg-gray-100" alt="pfp" src={pfp}/>
         <div className="flex flex-col justify-between items-center">
           <span>{user.posts.length}</span>
           <span>Posts</span>

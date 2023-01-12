@@ -9,6 +9,7 @@ const initialState = {
   handle: Cookies.get('instagram_handle'),
   name: '',
   bio: '',
+  pfp: '',
   posts: [],
   followers: [],
   following: []
@@ -110,12 +111,15 @@ export const userSlice = createSlice({
     setBio: (state, action) => {
       state.bio = action.payload
     },
+    setPfp: (state, action) => {
+      state.pfp = action.payload
+    },
     setProfileLoaded: (state, action) => {
       state.profileLoaded = action.payload;
     }
   },
 })
 
-export const { loggedIn, loadToken, setHandle, setName, setBio, setProfileLoaded } = userSlice.actions;
+export const { loggedIn, loadToken, setHandle, setName, setBio, setPfp, setProfileLoaded } = userSlice.actions;
 
 export default userSlice.reducer;
