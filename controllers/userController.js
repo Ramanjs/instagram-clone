@@ -33,7 +33,7 @@ exports.userDetail = (req, res, next) => {
         return next(err);
       }
       if (results.user == null) {
-        res.status(404).json({
+        return res.status(404).json({
           success: false,
           message: 'User not found'
         })
@@ -113,7 +113,7 @@ exports.editUserProfile = async (req, res) => {
       })
   }
   if (decoded.handle !== req.params.handle) {
-    res.status(403).json({
+    return res.status(403).json({
       success: false,
       message: 'Forbidden'
     })
@@ -122,16 +122,25 @@ exports.editUserProfile = async (req, res) => {
   const { file } = req;
   const { id } = file;
 
-  res.status(200).json({
-    success: true,
-    message: id,
-  })
+  User.findOneAndUpdate({ handle: req.params.handle }, {pfp: id})
+    .then(() => {
+      res.status(200).json({
+        success: true,
+        message: id,
+      })
+    })
+    .catch(() => {
+      res.status(500).json({
+        success: false,
+        message: 'Internal server error'
+      })
+    })
 }
 
 exports.getImage = (req, res) => {
   const id = req.params.id
   if (!id || id === undefined) {
-    res.status(400).json({
+    return res.status(400).send({
       success: false,
       message: 'No image id'
     })
@@ -141,7 +150,7 @@ exports.getImage = (req, res) => {
 
   gfs.find({ _id }).toArray((err, files) => {
     if (!files || files.length === 0) {
-      res.status(400).json({
+      return res.status(400).send({
         success: false,
         message: 'No files exist'
       })

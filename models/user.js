@@ -8,6 +8,7 @@ const UserSchema = new Schema({
   handle: {type: String, required: true, minLength: 1, maxLength: 30, unique: true},
   password: {type: String, required: true},
   bio: String,
+  pfp: String,
   posts: [{type: Schema.Types.ObjectId, ref: 'Post'}],
   followers: [{type: Schema.Types.ObjectId, ref: 'User'}],
   following: [{type: Schema.Types.ObjectId, ref: 'User'}],
