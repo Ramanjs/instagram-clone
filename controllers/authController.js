@@ -58,7 +58,7 @@ exports.login = async (req, res) => {
         handle: req.body.handle
       }
 
-      jwt.sign(payload, 'secretkey', {expiresIn: '1m'}, (err, token) => {
+      jwt.sign(payload, 'secretkey', {expiresIn: '10m'}, (err, token) => {
         if (err) {
           res.sendStatus(500);
         }
