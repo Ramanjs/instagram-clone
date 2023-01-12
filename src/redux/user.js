@@ -86,6 +86,7 @@ export const fetchUserDetails = createAsyncThunk('user', (creds, thunkAPI) => {
     .then(response => {
       thunkAPI.dispatch(setName(response.data.name));
       thunkAPI.dispatch(setBio(response.data.bio));
+      thunkAPI.dispatch(setPfp(response.data.pfp));
       thunkAPI.dispatch(setProfileLoaded(true));
     })
 })

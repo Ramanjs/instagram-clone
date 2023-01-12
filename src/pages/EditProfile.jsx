@@ -26,7 +26,7 @@ const EditProfile = () => {
       .then(res => {
         console.log(res)
         setFile(null)
-        dispatch(setPfp(baseUrl + '/users/images/'+ res.message))
+        dispatch(setPfp(res.message))
       })
       .catch(err => {
         console.log(err)
