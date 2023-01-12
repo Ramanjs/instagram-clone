@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Post = require('../models/post');
 const mongoose = require('mongoose')
 const multer = require('multer')
 const { GridFsStorage } = require('multer-gridfs-storage');
@@ -157,4 +158,57 @@ exports.getImage = (req, res) => {
     }
     gfs.openDownloadStream(_id).pipe(res)
   })
+}
+
+exports.createPost = async (req, res) => {
+  let decoded;
+  try {
+    decoded = jwt.verify(req.token, 'secretkey');
+  } catch(err) {
+      console.log(err)
+      return res.status(500).json({
+        success: false,
+        message: 'Internal server error occured'
+      })
+  }
+  if (decoded.handle !== req.params.handle) {
+    return res.status(403).json({
+      success: false,
+      message: 'Forbidden'
+    })
+  }
+
+  const { file } = req;
+  const { id } = file;
+  const caption = req.body.caption;
+
+  const post = {
+    image: id,
+    caption
+  }
+
+  try {
+    const newPost = await Post.create(post);
+    User.findOneAndUpdate(
+      { handle: req.params.handle },
+      {"$push": {posts: newPost}}
+    )
+      .then(() => {
+        res.status(200).json({
+          success: true,
+          message: id,
+        })
+      })
+      .catch(() => {
+        res.status(500).json({
+          success: false,
+          message: 'Internal server error'
+        })
+    })
+  } catch(err) {
+    res.status(500).json({
+      success: false,
+      message: err
+    })
+  }
 }
