@@ -212,3 +212,33 @@ exports.createPost = async (req, res) => {
     })
   }
 }
+
+exports.getPosts = (req, res, next) => {
+  const handle = req.params.handle;
+
+  if (!handle || handle === undefined) {
+    return res.status(400).send({
+      success: false,
+      message: 'No handle specified'
+    })
+  }
+
+  User.findOne({ handle })
+    .populate('posts')
+    .exec((err, user) => {
+      if (err) {
+        return next(err)
+      }
+
+      console.log(user.posts)
+      const posts = user.posts.map(post => ({
+        image: post.image,
+        caption: post.caption
+      }))
+
+      res.status(200).json({
+        success: true,
+        message: posts
+      })
+    });
+}
