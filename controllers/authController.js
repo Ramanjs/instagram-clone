@@ -46,12 +46,12 @@ exports.login = async (req, res) => {
     if (!user) {
       res.status(404).json({
         success: false,
-        message: 'Invalid username or password'
+        message: 'Invalid username or password',
       })
     } else if (!(await user.isValidPassword(req.body.password))) {
       res.status(404).json({
         success: false,
-        message: 'Invalid username or password'
+        message: 'Invalid username or password',
       })
     } else {
       const payload = {
@@ -65,7 +65,8 @@ exports.login = async (req, res) => {
         res.status(200).json({
           success: true,
           message: 'Logged in successfully',
-          token
+          token,
+          handle: req.body.handle
         })
       })
     }
@@ -79,7 +80,6 @@ exports.verifyToken = (req, res, next) => {
     const bearer = bearerHeader.split(' ');
     const bearerToken = bearer[1];
     req.token = bearerToken;
-    console.log(bearerToken);
     next();
   } else {
     res.status(403).json({

@@ -12,14 +12,21 @@ exports.userDetail = (req, res, next) => {
         return next(err);
       }
       if (results.user == null) {
-        res.json({
-          data: 'user not found'
+        res.status(404).json({
+          success: false,
+          message: 'User not found'
         })
       }
 
-      res.json({
+      res.status(200).json({
+        success: true,
+        message: 'Query successfull',
         data: results.user
       })
     }
   );
 };
+
+exports.editUserProfile = (req, res) => {
+
+}
