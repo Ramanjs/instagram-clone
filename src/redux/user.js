@@ -91,13 +91,9 @@ export const fetchUserDetails = createAsyncThunk('user', (creds, thunkAPI) => {
     })
 })
 
-export const fetchUserPosts = createAsyncThunk('user', (creds, thunkAPI) => {
-  fetch(baseUrl + '/users/' + creds.handle + '/posts', {
+export const fetchUserPosts = createAsyncThunk('user', (handle, thunkAPI) => {
+  fetch(baseUrl + '/users/' + handle + '/posts', {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + creds.token
-    },
   })
     .then(response => {
       if (!response.ok) {
@@ -107,7 +103,7 @@ export const fetchUserPosts = createAsyncThunk('user', (creds, thunkAPI) => {
     })
     .then(response => response.json())
     .then(response => {
-      thunkAPI.dispatch(setPosts(response));
+      thunkAPI.dispatch(setPosts(response.message));
     })
 })
 

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { fetchUserDetails } from '../redux/user';
+import { fetchUserDetails, fetchUserPosts } from '../redux/user';
 import { useDispatch, useSelector } from 'react-redux';
 
 const RequireAuth = (props) => {
@@ -17,6 +17,7 @@ const RequireAuth = (props) => {
         token: user.token
       }
       dispatch(fetchUserDetails(creds));
+      dispatch(fetchUserPosts(creds.handle));
     }
   }, [])
 
