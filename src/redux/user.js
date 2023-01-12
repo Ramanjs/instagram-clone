@@ -91,6 +91,26 @@ export const fetchUserDetails = createAsyncThunk('user', (creds, thunkAPI) => {
     })
 })
 
+export const fetchUserPosts = createAsyncThunk('user', (creds, thunkAPI) => {
+  fetch(baseUrl + '/users/' + creds.handle + '/posts', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + creds.token
+    },
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw Error('ofo');
+      }
+      return response;
+    })
+    .then(response => response.json())
+    .then(response => {
+      thunkAPI.dispatch(setPosts(response));
+    })
+})
+
 export const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -117,10 +137,13 @@ export const userSlice = createSlice({
     },
     setProfileLoaded: (state, action) => {
       state.profileLoaded = action.payload;
+    },
+    setPosts: (state, action) => {
+      state.posts = action.payload;
     }
   },
 })
 
-export const { loggedIn, loadToken, setHandle, setName, setBio, setPfp, setProfileLoaded } = userSlice.actions;
+export const { loggedIn, loadToken, setHandle, setName, setBio, setPfp, setProfileLoaded, setPosts } = userSlice.actions;
 
 export default userSlice.reducer;

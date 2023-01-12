@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
+import AddPost from './pages/AddPost';
 import EditProfile from './pages/EditProfile';
 import './index.css';
 import store from './redux/store';
@@ -37,7 +38,7 @@ root.render(
                 <Profile />
               </RequireAuth>
             }
-         />
+          />
           <Route
             path="/profile/edit"
             element={
@@ -46,7 +47,16 @@ root.render(
                 <EditProfile />
               </RequireAuth>
             }
-         />
+          />
+          <Route
+            path="/add-post"
+            element={
+              <RequireAuth>
+                <Navbar />
+                <AddPost />
+              </RequireAuth>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </Provider>

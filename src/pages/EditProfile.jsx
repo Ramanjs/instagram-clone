@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {setPfp} from '../redux/user';
 import baseUrl from '../baseUrl';
@@ -42,7 +42,7 @@ const EditProfile = () => {
       <h1 className="text-2xl font-semibold my-2">Edit Profile</h1>
       <form onSubmit={handleSubmit} className="w-full flex flex-col items-start space-y-4 my-2" encType="multipart/form-data">
         <input type="file" name="file" id="file" onChange={handleFile} required/>
-        <input type="submit" value="Submit" />
+        <input className="w-fit py-2 px-4 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded cursor-pointer mt-2" type="submit" value="Submit" />
       </form>
     </div>
   )
