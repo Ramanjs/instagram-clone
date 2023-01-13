@@ -7,9 +7,9 @@ const crypto = require('crypto')
 const path = require('path')
 const jwt = require('jsonwebtoken');
 const async = require('async');
+require('dotenv').config()
 
-const mongoDB = 'mongodb+srv://ramanjs:hesoyamsa26@dev.wlk2w3u.mongodb.net/instagram?retryWrites=true&w=majority';
-mongoose.connect(mongoDB, {
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true
@@ -50,7 +50,7 @@ exports.userDetail = (req, res, next) => {
 };
 
 const storage = new GridFsStorage({
-  url: mongoDB,
+  url: process.env.MONGO_URI,
   options: { useUnifiedTopology: true },
   file: (req, file) => {
     return new Promise((resolve, reject) => {
