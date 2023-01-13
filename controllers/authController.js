@@ -1,8 +1,9 @@
 const User = require('../models/user');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-exports.signup = (req, res, next) => {
-  User.findOne({ handle: req.body.handle }, (err, user) => {
+exports.signup = async (req, res, next) => {
+  User.findOne({ handle: req.body.handle }, async (err, user) => {
     if (err) {
       return next(err);
     }
@@ -14,10 +15,11 @@ exports.signup = (req, res, next) => {
       })
     }
 
+    const hash = await bcrypt.hash(req.body.password, 10);
     const userDetails = {
       name: req.body.name,
       handle: req.body.handle,
-      password: req.body.password
+      password: hash 
     }
 
     const newUser = new User(userDetails);
@@ -46,12 +48,13 @@ exports.login = async (req, res) => {
     if (!user) {
       res.status(404).json({
         success: false,
-        message: 'Invalid username or password',
+        message: 'Invalid username',
       })
     } else if (!(await user.isValidPassword(req.body.password))) {
+      console.log(req.body.password)
       res.status(404).json({
         success: false,
-        message: 'Invalid username or password',
+        message: 'Invalid password',
       })
     } else {
       const payload = {
