@@ -12,7 +12,9 @@ const initialState = {
   pfp: '',
   posts: [],
   followers: [],
-  following: []
+  following: [],
+  feed: [],
+  suggested: []
 };
 
 if (initialState.token && initialState.handle) {
@@ -107,6 +109,26 @@ export const fetchUserPosts = createAsyncThunk('user', (handle, thunkAPI) => {
     })
 })
 
+export const fetchFeed = createAsyncThunk('user', () => {
+
+})
+
+export const fetchSuggested = createAsyncThunk('user', (handle, thunkAPI) => {
+  fetch(baseUrl + '/users/' + handle + '/suggested', {
+    method: 'GET',
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw Error('ofo');
+      }
+      return response;
+    })
+    .then(response => response.json())
+    .then(response => {
+      thunkAPI.dispatch(setSuggested(response.message));
+    })
+})
+
 export const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -136,10 +158,13 @@ export const userSlice = createSlice({
     },
     setPosts: (state, action) => {
       state.posts = action.payload;
+    },
+    setSuggested: (state, action) => {
+      state.suggested = action.payload;
     }
   },
 })
 
-export const { loggedIn, loadToken, setHandle, setName, setBio, setPfp, setProfileLoaded, setPosts } = userSlice.actions;
+export const { loggedIn, loadToken, setHandle, setName, setBio, setPfp, setProfileLoaded, setPosts, setSuggested } = userSlice.actions;
 
 export default userSlice.reducer;

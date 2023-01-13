@@ -7,7 +7,9 @@ import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
+import Search from './pages/Search';
 import AddPost from './pages/AddPost';
+import Posts from './pages/Posts';
 import EditProfile from './pages/EditProfile';
 import './index.css';
 import store from './redux/store';
@@ -54,6 +56,32 @@ root.render(
               <RequireAuth>
                 <Navbar />
                 <AddPost />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/posts"
+            element={
+              <RequireAuth>
+                <Navbar />
+                <Posts />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/search"
+            element={
+              <RequireAuth>
+                <Navbar />
+                <Search />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/:handle"
+            element={
+              <RequireAuth>
+                <Navbar />
               </RequireAuth>
             }
           />

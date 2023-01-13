@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { fetchUserDetails, fetchUserPosts } from '../redux/user';
+import { fetchSuggested, fetchUserDetails, fetchUserPosts } from '../redux/user';
 import { useDispatch, useSelector } from 'react-redux';
 
 const RequireAuth = (props) => {
@@ -18,6 +18,7 @@ const RequireAuth = (props) => {
       }
       dispatch(fetchUserDetails(creds));
       dispatch(fetchUserPosts(creds.handle));
+      dispatch(fetchSuggested(creds.handle));
     }
   }, [])
 
