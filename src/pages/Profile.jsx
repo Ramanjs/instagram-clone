@@ -45,7 +45,7 @@ const Profile = () => {
             ))}
           </div>
         ) : (
-        <span>When you share posts, they'll appear on your profile.</span>
+        <span className="px-2">When you share posts, they'll appear on your profile.</span>
         )}
       </div>
     </div>
