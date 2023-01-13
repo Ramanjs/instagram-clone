@@ -8,7 +8,7 @@ const Post = (props) => {
       {/* Author Header */}
       <div className="w-full flex justify-start items-center p-2 space-x-4">
         {/* Author pfp */}
-        <img className="w-10 h-10 border-none rounded-full bg-gray-100" alt="pfp" src={`${baseUrl}/users/images/${props.post.pfp}`}/>
+        <img className="w-10 h-10 border-none rounded-[50%] object-cover bg-gray-100" alt="pfp" src={`${baseUrl}/users/images/${props.post.pfp}`}/>
         <span className="font-semibold cursor-pointer text-lg">{props.post.author}</span>
       </div>
 
