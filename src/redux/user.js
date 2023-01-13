@@ -145,10 +145,24 @@ export const userSlice = createSlice({
     },
     setFollowing: (state, action) => {
       state.following = action.payload
+    },
+    logout: (state) => {
+      state.loggedIn= false
+      state.profileLoaded= false
+      state.token = undefined
+      state.handle = undefined
+      state.name= ''
+      state.bio= ''
+      state.pfp= ''
+      state.posts= []
+      state.followers= []
+      state.following= []
+      state.feed= []
+      state.suggested= []
     }
   },
 })
 
-export const { loggedIn, loadToken, setHandle, setName, setBio, setPfp, setProfileLoaded, setPosts, setSuggested, setFollowers, setFollowing } = userSlice.actions;
+export const { loggedIn, loadToken, setHandle, setName, setBio, setPfp, setProfileLoaded, setPosts, setSuggested, setFollowers, setFollowing, logout } = userSlice.actions;
 
 export default userSlice.reducer;

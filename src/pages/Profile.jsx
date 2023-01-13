@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
 import { loggedIn } from '../redux/user';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { logout as logoutAction } from '../redux/user';
 import baseUrl from '../baseUrl'
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
@@ -19,7 +20,7 @@ const Profile = () => {
   const logout = () => {
     Cookies.remove('instagram_handle')
     Cookies.remove('instagram_token')
-    dispatch(loggedIn(false))
+    dispatch(logoutAction())
     navigate("/login")
   }
 
