@@ -26,7 +26,7 @@ connection.once('open', () => {
 exports.userDetail = (req, res, next) => {
   async.parallel({
     user(callback) {
-      User.findOne({handle: req.params.handle}).exec(callback);
+      User.findOne({handle: req.params.handle}).populate('followers').exec(callback);
     }
   },
     (err, results) => {
@@ -80,7 +80,7 @@ const store = multer({
 })
 
 function checkFileType(file, cb) {
-  const filetypes = /jpeg|jpg|png|gif/;
+  const filetypes = /jpeg|jpg|png|avif|gif/;
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = filetypes.test(file.mimetype);
   if (mimetype && extname) return cb(null, true);
