@@ -1,13 +1,11 @@
-import {useEffect} from 'react'
-import {useSelector} from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import Post from '../components/Post'
 
-const Posts = () => {
+const UserPosts = () => {
   const { state } = useLocation()
-  const handle = useSelector(state => state.user.handle)
-  const pfp = useSelector(state => state.user.pfp)
-  const posts = useSelector(state => state.user.posts)
+  const posts = state.posts
+  const handle = state.handle
+  const pfp = state.pfp
 
   return (
     <div className="w-full flex flex-col py-2">
@@ -24,4 +22,4 @@ const Posts = () => {
   )
 }
 
-export default Posts
+export default UserPosts

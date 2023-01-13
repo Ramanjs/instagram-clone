@@ -25,19 +25,17 @@ const Post = (props) => {
       </div>
 
       {/* Comments section */}
-      <div className="w-full flex flex-col items-start pl-4">
-        {/* Comments */}
+      {/*<div className="w-full flex flex-col items-start pl-4">
         <div className="w-full flex flex-col items-start">
           <p><span className="font-semibold mr-2 cursor-pointer">Author</span>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
         </div>
         <span className="text-gray-500 cursor-pointer">view more comments</span>
       </div>
 
-      {/* Add a comment */} 
       <form className="w-full flex justify-between p-2 my-2 border-t-2 border-gray-200">
         <input className="focus:outline-none" type="text" placeholder="Add a comment..." required/>
         <input className="text-blue-400 font-semibold cursor-pointer" type="submit" value="Post" />
-      </form>
+      </form> */}
     </div>
   )
 }

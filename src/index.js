@@ -7,6 +7,8 @@ import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
+import UserProfile from './pages/UserProfile';
+import UserPosts from './pages/UserPosts';
 import Search from './pages/Search';
 import AddPost from './pages/AddPost';
 import Posts from './pages/Posts';
@@ -82,6 +84,16 @@ root.render(
             element={
               <RequireAuth>
                 <Navbar />
+                <UserProfile />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/:handle/posts"
+            element={
+              <RequireAuth>
+                <Navbar />
+                <UserPosts />
               </RequireAuth>
             }
           />
