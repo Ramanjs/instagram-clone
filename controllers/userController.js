@@ -281,11 +281,11 @@ exports.getSuggested = (req, res, next) => {
 
         users.forEach(suggestion => {
           let exclude = false;
-          user.following.forEach(follow => {
-            if (follow.handle === suggestion.handle) {
-              exclude = true;
-            }
-          })
+          //user.following.forEach(follow => {
+            //if (follow.handle === suggestion.handle) {
+              //exclude = true;
+            //}
+          //})
 
           if (suggestion.handle === handle) exclude = true
 
