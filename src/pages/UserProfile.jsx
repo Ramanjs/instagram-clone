@@ -3,7 +3,7 @@ import {useSelector} from 'react-redux'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import baseUrl from '../baseUrl'
 
-const User = () => {
+const UserProfile = () => {
   const params = useParams()
   const handle = params.handle
   const navigate = useNavigate()
@@ -118,4 +118,4 @@ const User = () => {
   )
 }
 
-export default User
+export default UserProfile

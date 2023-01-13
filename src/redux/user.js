@@ -89,6 +89,8 @@ export const fetchUserDetails = createAsyncThunk('user', (creds, thunkAPI) => {
       thunkAPI.dispatch(setName(response.data.name));
       thunkAPI.dispatch(setBio(response.data.bio));
       thunkAPI.dispatch(setPfp(response.data.pfp));
+      thunkAPI.dispatch(setFollowers(response.data.followers))
+      thunkAPI.dispatch(setFollowing(response.data.following))
       thunkAPI.dispatch(setProfileLoaded(true));
     })
 })
@@ -154,17 +156,23 @@ export const userSlice = createSlice({
       state.pfp = action.payload
     },
     setProfileLoaded: (state, action) => {
-      state.profileLoaded = action.payload;
+      state.profileLoaded = action.payload
     },
     setPosts: (state, action) => {
-      state.posts = action.payload;
+      state.posts = action.payload
     },
     setSuggested: (state, action) => {
-      state.suggested = action.payload;
+      state.suggested = action.payload
+    },
+    setFollowers: (state, action) => {
+      state.followers = action.payload
+    },
+    setFollowing: (state, action) => {
+      state.following = action.payload
     }
   },
 })
 
-export const { loggedIn, loadToken, setHandle, setName, setBio, setPfp, setProfileLoaded, setPosts, setSuggested } = userSlice.actions;
+export const { loggedIn, loadToken, setHandle, setName, setBio, setPfp, setProfileLoaded, setPosts, setSuggested, setFollowers, setFollowing } = userSlice.actions;
 
 export default userSlice.reducer;
