@@ -34,7 +34,7 @@ const Profile = () => {
         <span className="font-semibold">{user.name}</span>
         <span>{user.bio}</span>
       </div>
-      <button className="border-none bg-gray-200 rounded-lg p-2 font-medium mx-4"><Link to="/profile/edit">Edit profile</Link></button>
+      <Link to="/profile/edit" className="border-none bg-gray-200 rounded-lg p-2 font-medium mx-4 text-center">Edit profile</Link>
       <div className="w-full flex flex-wrap justify-between mt-8 border-t-2 border-t-gray-300">
         {user.posts.length > 0 ? (
           <div className="w-full flex flex-wrap justify-start">

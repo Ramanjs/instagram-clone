@@ -35,6 +35,8 @@ const UserProfile = () => {
         setName(response.data.name)
         setBio(response.data.bio)
         setPfp(response.data.pfp)
+        setFollowers(response.data.followers)
+        setFollowing(response.data.following)
       })
   }, [])
 
