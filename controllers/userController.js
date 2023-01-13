@@ -347,3 +347,58 @@ exports.addFollower = async (req, res) => {
     })
   }
 }
+
+exports.getFeed = async (req, res) => {
+  let decoded;
+  try {
+    decoded = jwt.verify(req.token, 'secretkey');
+  } catch(err) {
+      console.log(err)
+      return res.status(500).json({
+        success: false,
+        message: 'Internal server error occured'
+      })
+  }
+
+  if (decoded.handle !== req.params.handle) {
+    return res.status(403).json({
+      success: false,
+      message: 'Forbidden'
+    })
+  }
+
+  try {
+    const user = await User.findOne({ handle: req.params.handle })
+      .populate({
+        path: 'following',
+        populate: {
+          path: 'posts'
+        }
+      })
+      .exec()
+    const posts = [];
+    user.following.forEach(async follow => {
+      follow.posts.forEach(async post => {
+        posts.push({
+          author: follow.handle,
+          pfp: follow.pfp,
+          image: post.image,
+          caption: post.caption
+        })
+      })
+    })
+
+    console.log(posts)
+
+    res.status(200).json({
+      success: true,
+      data: posts
+    })
+  } catch(err) {
+    console.log(err)
+    res.status(500).json({
+      success: false,
+      message: err
+    })
+  }
+}

@@ -15,6 +15,8 @@ router.post('/:handle/followers', verifyToken, userController.addFollower);
 
 router.get('/:handle/suggested', userController.getSuggested);
 
+router.get('/:handle/feed', verifyToken, userController.getFeed);
+
 router.get('/images/:id', userController.getImage);
 
 module.exports = router;
