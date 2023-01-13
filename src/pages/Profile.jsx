@@ -42,7 +42,7 @@ const Profile = () => {
           <div className="w-full flex flex-wrap justify-start">
             {user.posts.map(post => (
               <div className="w-1/3 h-24 overflow-hidden p-0.5" onClick={handleClick.bind(null, [post.image])}>
-                <img className="h-full object-cover" src={`${baseUrl}/users/images/${post.image}`} alt="post"/>
+                <img className="w-full h-full object-cover" src={`${baseUrl}/users/images/${post.image}`} alt="post"/>
               </div>
             ))}
           </div>

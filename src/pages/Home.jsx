@@ -37,6 +37,7 @@ const Home = () => {
       {posts.map(post => (
         <Post post={post}/>
       ))}
+      {posts.length === 0 && <p className="text-center">Follow people to see their posts</p> }
       {/* marging to accomodate navbar */}
       <div className="mb-8"></div>
     </div>

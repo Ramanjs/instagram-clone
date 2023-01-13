@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import {useNavigate} from 'react-router-dom'
+import {fetchUserPosts} from '../redux/user'
 import baseUrl from '../baseUrl'
 
 const AddPost = () => {
@@ -9,12 +11,13 @@ const AddPost = () => {
   const [file, setFile] = useState(null)
   const [caption, setCaption] = useState('')
 
+  const navigate = useNavigate()
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const fd = new FormData();
     fd.append('image', file)
     fd.append('caption', caption)
-    console.log(file)
     fetch(baseUrl + `/users/${handle}/posts`,
       {
         method: 'POST',
@@ -23,10 +26,10 @@ const AddPost = () => {
         },
         body: fd
       })
-      .then(res => res.json())
-      .then(res => {
-        console.log(res)
+      .then(() => {
+        dispatch(fetchUserPosts(handle))
         setFile(null)
+        navigate('/profile')
       })
       .catch(err => {
         console.log(err)

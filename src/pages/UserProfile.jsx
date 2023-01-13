@@ -84,7 +84,9 @@ const UserProfile = () => {
     <div className="w-full flex flex-col py-2">
       <h1 className="text-2xl font-semibold px-4">{handle}</h1>
       <div className="w-full flex justify-between items-center mt-8 px-4">
-        <img className="w-16 h-16 border-none rounded-full bg-gray-100" alt="pfp" src={`${baseUrl}/users/images/${pfp}`}/>
+        <div className="w-20 h-20 rounded-[50%] border-none bg-gray-100">
+          <img className="h-full rounded-[50%] object-cover" alt="pfp" src={`${baseUrl}/users/images/${pfp}`}/>
+        </div>
         <div className="flex flex-col justify-between items-center">
           <span>{posts.length}</span>
           <span>Posts</span>
@@ -107,8 +109,8 @@ const UserProfile = () => {
         {posts.length > 0 ? (
           <div className="w-full flex flex-wrap justify-start">
             {posts.map(post => (
-              <div className="w-1/3 overflow-hidden p-0.5" onClick={handleClick}>
-                <img className="h-full" src={`${baseUrl}/users/images/${post.image}`} alt="post"/>
+              <div className="w-1/3 h-24 overflow-hidden p-0.5" onClick={handleClick}>
+                <img className="w-full h-full object-cover" src={`${baseUrl}/users/images/${post.image}`} alt="post"/>
               </div>
             ))}
           </div>
