@@ -121,21 +121,42 @@ exports.editUserProfile = async (req, res) => {
   }
 
   const { file } = req;
-  const { id } = file;
 
-  User.findOneAndUpdate({ handle: req.params.handle }, {pfp: id})
-    .then(() => {
-      res.status(200).json({
-        success: true,
-        message: id,
-      })
-    })
-    .catch(() => {
-      res.status(500).json({
+  const user = await User.findOne({ handle: req.params.handle }).exec();
+  let pfp, bio;
+  pfp = user.pfp;
+  bio = user.bio;
+
+  if (file) {
+    try {
+      const { id } = file;
+      user.pfp = id;
+      pfp = user.pfp;
+      await user.save();
+    } catch(err) {
+      return res.status(500).json({
         success: false,
-        message: 'Internal server error'
+        message: err
       })
-    })
+    }
+  }
+
+  if (req.body.bio) {
+    try {
+      user.bio = req.body.bio;
+      bio = user.bio;
+      await user.save();
+    } catch(err) {
+      return res.status(500).json({
+        success: false,
+        message: err
+      })
+    }
+  }
+  res.status(200).json({
+    success: true,
+    data: { pfp, bio }
+  })
 }
 
 exports.getImage = (req, res) => {
