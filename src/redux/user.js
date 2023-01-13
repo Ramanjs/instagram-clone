@@ -21,29 +21,7 @@ if (initialState.token && initialState.handle) {
   initialState.loggedIn = true;
 }
 
-export const signup = createAsyncThunk('user', async (creds, thunkAPI) => {
-  fetch(baseUrl + '/auth/signup', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      name: creds.fullname,
-      handle: creds.username,
-      password: creds.password
-    })
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw Error('Error occured while signing up')
-      }
-      return response;
-    })
-    .then(response => response.json())
-    .then(response => {
-      console.log(response);
-    })
-});
+
 
 export const login = createAsyncThunk('user', async (creds, thunkAPI) => {
   fetch(baseUrl + '/auth/login', {

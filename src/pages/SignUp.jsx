@@ -1,22 +1,37 @@
 import React, {useState} from 'react';
 import instagram from '../images/instagram.png';
-import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { signup } from '../redux/user';
+import baseUrl from '../baseUrl';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
   const [fullName, setFullName] = useState('')
   const [userName, setUserName] = useState('')
   const [passwd, setPasswd] = useState('')
-  const dispatch = useDispatch();
+
+  const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(signup({
-      fullname: fullName,
-      username: userName,
-      password: passwd
-    }))
+    fetch(baseUrl + '/auth/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: fullName,
+        handle: userName,
+        password: passwd
+      })
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw Error('Error occured while signing up')
+        }
+        return navigate('/login');
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
 
   return (
