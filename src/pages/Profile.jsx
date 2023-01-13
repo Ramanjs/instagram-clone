@@ -1,20 +1,34 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
+import { loggedIn } from '../redux/user';
+import LogoutIcon from '@mui/icons-material/Logout';
 import baseUrl from '../baseUrl'
+import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
   const user = useSelector(state => state.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleClick = (image) => {
     navigate("/posts", {state: {post: image}})
   }
+  
+  const logout = () => {
+    Cookies.remove('instagram_handle')
+    Cookies.remove('instagram_token')
+    dispatch(loggedIn(false))
+    navigate("/login")
+  }
 
   return (
     <div className="w-full flex flex-col py-2">
-      <h1 className="text-2xl font-semibold px-4">{user.handle}</h1>
+      <div className="flex justify-between items-center px-4 text-2xl">
+        <h1 className="font-semibold">{user.handle}</h1>
+        <LogoutIcon className="cursor-pointer" onClick={logout} fontSize="inherit"/>
+      </div>
       <div className="w-full flex justify-between items-center mt-8 px-4">
         <div className="w-20 h-20 border-none rounded-[50%] bg-gray-100 overflow-hidden">
           <img className="h-full rounded-[50%] object-cover" alt="" src={`${baseUrl}/users/images/${user.pfp}`}/>

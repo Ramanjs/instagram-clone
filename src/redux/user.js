@@ -21,8 +21,6 @@ if (initialState.token && initialState.handle) {
   initialState.loggedIn = true;
 }
 
-
-
 export const login = createAsyncThunk('user', async (creds, thunkAPI) => {
   fetch(baseUrl + '/auth/login', {
     method: 'POST',
