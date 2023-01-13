@@ -6,6 +6,7 @@ import baseUrl from '../baseUrl'
 const UserProfile = () => {
   const params = useParams()
   const handle = params.handle
+  const myHandle = useSelector(state => state.user.handle)
   const navigate = useNavigate()
   const token = useSelector(state => state.user.token)
 
@@ -16,6 +17,14 @@ const UserProfile = () => {
   const [followers, setFollowers] = useState([])
   const [following, setFollowing] = useState([])
   const [isFollowing, setIsFollowing] = useState(false)
+
+  useEffect(() => {
+    followers.forEach(follower => {
+      if (follower.handle === myHandle) {
+        setIsFollowing(true)
+      }
+    })
+  }, [followers])
 
   useEffect(() => {
     fetch(baseUrl + '/users/' + handle, {
@@ -60,24 +69,26 @@ const UserProfile = () => {
     navigate(`/${handle}/posts`, {state: {posts, handle, pfp}})
   }
 
-  const handleFollow = () => {
+  const addFollower = () => {
     fetch(baseUrl + '/users/' + handle + '/followers', {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + token
       }
     })
-      .then(response => {
-        if (!response.ok) {
-          throw Error('ofo');
-        }
-        return response;
+      .then(res => res.json())
+      .then(() => setIsFollowing(true))
+      .catch((err) => {
+        console.log(err)
       })
-      .then(response => response.json())
-      .then(response => {
-        console.log(response.message)
-        setFollowing(!isFollowing)
-      })
+  }
+
+  const handleFollow = () => {
+    if (isFollowing) {
+      //setIsFollowing(false)
+    } else {
+      addFollower()
+    }
   }
 
   return (
@@ -104,7 +115,7 @@ const UserProfile = () => {
         <span className="font-semibold">{name}</span>
         <span>{bio}</span>
       </div>
-      <div className={"mx-2 py-2 px-4 text-white font-bold rounded cursor-pointer text-center" + (isFollowing ? " bg-slate-100" : " bg-blue-400 hover:bg-blue-500")} onClick={handleFollow}>{isFollowing ? 'Unfollow' : 'Follow'}</div>
+      <div className={"mx-2 py-2 px-4 font-bold rounded cursor-pointer text-center" + (isFollowing ? " bg-gray-200" : " text-white bg-blue-400 hover:bg-blue-500")} onClick={handleFollow}>{isFollowing ? 'Unfollow' : 'Follow'}</div>
       <div className="w-full flex flex-wrap justify-between mt-8 border-t-2 border-t-gray-300">
         {posts.length > 0 ? (
           <div className="w-full flex flex-wrap justify-start">
