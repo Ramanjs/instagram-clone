@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {setPfp, setBio as stateSetBio} from '../redux/user';
+import {useNavigate} from 'react-router-dom';
 import baseUrl from '../baseUrl';
 
 const EditProfile = () => {
@@ -9,6 +10,8 @@ const EditProfile = () => {
   const dispatch = useDispatch()
   const [file, setFile] = useState(null)
   const [bio, setBio] = useState(useSelector(state => state.user.bio))
+
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,6 +31,7 @@ const EditProfile = () => {
         dispatch(setPfp(res.data.pfp))
         dispatch(stateSetBio(res.data.bio))
         setFile(null)
+        navigate('/profile')
       })
       .catch(err => {
         console.log(err)
