@@ -140,7 +140,7 @@ exports.editUserProfile = async (req, res) => {
 
 exports.getImage = (req, res) => {
   const id = req.params.id
-  if (!id || id === undefined) {
+  if (!id || id === undefined || id === 'undefined') {
     return res.status(400).send({
       success: false,
       message: 'No image id'
@@ -230,7 +230,6 @@ exports.getPosts = (req, res, next) => {
         return next(err)
       }
 
-      console.log(user.posts)
       const posts = user.posts.map(post => ({
         image: post.image,
         caption: post.caption
@@ -241,4 +240,89 @@ exports.getPosts = (req, res, next) => {
         message: posts
       })
     });
+}
+
+exports.getSuggested = (req, res, next) => {
+  const handle = req.params.handle
+
+  User.find({}, (err, users) => {
+    if (err) {
+      return res.status(500).json({
+        success: false,
+        message: err
+      })
+    }
+
+    User.findOne({ handle })
+      .populate('following')
+      .exec((err, user) => {
+        const suggested = [];
+
+        users.forEach(suggestion => {
+          let exclude = false;
+          user.following.forEach(follow => {
+            if (follow.handle === suggestion.handle) {
+              exclude = true;
+            }
+          })
+
+          if (suggestion.handle === handle) exclude = true
+
+          if (!exclude) {
+            suggested.push({
+              handle: suggestion.handle,
+              pfp: suggestion.pfp
+            })
+          }
+        })
+
+        res.status(200).json({
+          success: true,
+          message: suggested
+        })
+      })
+ })
+}
+
+exports.addFollower = async (req, res) => {
+  let decoded;
+  try {
+    decoded = jwt.verify(req.token, 'secretkey');
+  } catch(err) {
+      console.log(err)
+      return res.status(500).json({
+        success: false,
+        message: 'Internal server error occured'
+      })
+  }
+
+  if (decoded.handle === req.params.handle) {
+    return res.status(403).json({
+      success: false,
+      message: 'Forbidden'
+    })
+  }
+
+  const followerHandle = decoded.handle;
+  const followedHandle = req.params.handle;
+
+  try {
+    const followerUser = await User.findOne({ handle: followerHandle }).exec();
+    const followedUser = await User.findOne({ handle: followedHandle }).exec();
+
+    followerUser.following.push(followedUser)
+    followedUser.followers.push(followerUser)
+
+    await followerUser.save()
+    await followedUser.save()
+
+    res.status(200).json({
+      success: true
+    })
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err
+    })
+  }
 }
