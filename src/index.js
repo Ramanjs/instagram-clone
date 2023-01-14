@@ -20,85 +20,87 @@ import { Provider } from 'react-redux';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route 
-            path="/" 
-            element={
-              <RequireAuth>
-                <Navbar />
-                <Home />
-              </RequireAuth>
-            } 
-          />
-          <Route
-            path="/profile"
-            element={
-              <RequireAuth>
-                <Navbar />
-                <Profile />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/profile/edit"
-            element={
-              <RequireAuth>
-                <Navbar />
-                <EditProfile />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/add-post"
-            element={
-              <RequireAuth>
-                <Navbar />
-                <AddPost />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/posts"
-            element={
-              <RequireAuth>
-                <Navbar />
-                <Posts />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/search"
-            element={
-              <RequireAuth>
-                <Navbar />
-                <Search />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/:handle"
-            element={
-              <RequireAuth>
-                <Navbar />
-                <UserProfile />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/:handle/posts"
-            element={
-              <RequireAuth>
-                <Navbar />
-                <UserPosts />
-              </RequireAuth>
-            }
-          />
-        </Routes>
-      </BrowserRouter>
-    </Provider>
+    <div className="max-w-[420px] mx-auto">
+      <Provider store={store}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route 
+              path="/" 
+              element={
+                <RequireAuth>
+                  <Navbar />
+                  <Home />
+                </RequireAuth>
+              } 
+            />
+            <Route
+              path="/profile"
+              element={
+                <RequireAuth>
+                  <Navbar />
+                  <Profile />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/profile/edit"
+              element={
+                <RequireAuth>
+                  <Navbar />
+                  <EditProfile />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/add-post"
+              element={
+                <RequireAuth>
+                  <Navbar />
+                  <AddPost />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/posts"
+              element={
+                <RequireAuth>
+                  <Navbar />
+                  <Posts />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/search"
+              element={
+                <RequireAuth>
+                  <Navbar />
+                  <Search />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/:handle"
+              element={
+                <RequireAuth>
+                  <Navbar />
+                  <UserProfile />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/:handle/posts"
+              element={
+                <RequireAuth>
+                  <Navbar />
+                  <UserPosts />
+                </RequireAuth>
+              }
+            />
+          </Routes>
+        </BrowserRouter>
+      </Provider>
+    </div>
   </React.StrictMode>
 );

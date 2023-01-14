@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   return (
-    <div className="w-full fixed bottom-0 h-16 border-t-2 border-t-gray-200 p-2 flex justify-between items-center bg-white">
+    <div className="w-full max-w-[420px] fixed bottom-0 h-16 border-t-2 border-t-gray-200 p-2 flex justify-between items-center bg-white">
       <Link to="/"><HomeOutlinedIcon fontSize="large" /></Link>
       <Link to="/search"><SearchIcon fontSize="large" /></Link>
       <Link to="/add-post"><AddIcon fontSize="large" /></Link>
