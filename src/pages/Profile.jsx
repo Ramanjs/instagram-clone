@@ -31,7 +31,7 @@ const Profile = () => {
       </div>
       <div className="w-full flex justify-between items-center mt-8 px-4">
         <div className="w-20 h-20 border-none rounded-[50%] bg-gray-100 overflow-hidden">
-          <img className="h-full rounded-[50%] object-cover" alt="" src={`${baseUrl}/users/images/${user.pfp}`}/>
+          <img className="h-full rounded-[50%] object-cover" alt="" src={user.pfp}/>
         </div>
         <div className="flex flex-col justify-between items-center">
           <span>{user.posts.length}</span>
@@ -56,7 +56,7 @@ const Profile = () => {
           <div className="w-full flex flex-wrap justify-start">
             {user.posts.map(post => (
               <div className="w-1/3 h-24 overflow-hidden p-0.5" onClick={handleClick.bind(null, [post.image])}>
-                <img className="w-full h-full object-cover" src={`${baseUrl}/users/images/${post.image}`} alt="post"/>
+                <img className="w-full h-full object-cover" src={post.image} alt="post"/>
               </div>
             ))}
           </div>

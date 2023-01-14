@@ -18,7 +18,7 @@ const EditProfile = () => {
     const fd = new FormData();
     if (file) fd.append('image', file)
     fd.append('bio', bio)
-    fetch(baseUrl + `/users/${handle}/profile`,
+    fetch(baseUrl + `/users/${handle}/profile/`,
       {
         method: 'POST',
         headers: {

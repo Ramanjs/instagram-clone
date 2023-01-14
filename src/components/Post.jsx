@@ -1,5 +1,4 @@
 import React from 'react';
-import baseUrl from '../baseUrl';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 
 const Post = (props) => {
@@ -8,12 +7,12 @@ const Post = (props) => {
       {/* Author Header */}
       <div className="w-full flex justify-start items-center p-2 space-x-4">
         {/* Author pfp */}
-        <img className="w-10 h-10 border-none rounded-[50%] object-cover bg-gray-100" alt="pfp" src={`${baseUrl}/users/images/${props.post.pfp}`}/>
+        <img className="w-10 h-10 border-none rounded-[50%] object-cover bg-gray-100" alt="pfp" src={props.post.pfp}/>
         <span className="font-semibold cursor-pointer text-lg">{props.post.author}</span>
       </div>
 
       {/* Post Image */}
-      <img className="w-full h-96 object-cover" alt="post" src={`${baseUrl}/users/images/${props.post.image}`}/>
+      <img className="w-full h-96 object-cover" alt="post" src={props.post.image}/>
 
       {/* Post Meta*/}
       <div className="w-full flex flex-col p-2">
