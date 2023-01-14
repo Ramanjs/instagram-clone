@@ -1,23 +1,26 @@
 # Instagram Clone
 
-This project is made according to the jamstack technique of making web apps.
+Clone of Instagram made using MERN stack. [Website link.](https://instagram-clone-raman.vercel.app)
+
+*Note: Uploading pictures is not functional on the current vercel deployment. Working on a fix.*
 
 ## Features 
 
 1. Public user profile: Consists of 
+    * posts by that user
+    * profile image, name, bio, user handle,  and count of posts, followers and following
+    * edit profile button
 
-  * Private / Public ??
-  * posts by that user
-  * profile image, name, bio, user handle, post count, followers, following count
-  * edit profile button
-
-2. Search users: search for users using their usernames or handles (also the suggestions page)
+2. Search users (suggestions page): users you may want to follow are displayed here
 3. Edit profile page
 4. Feed: posts of people user follows
-5. Notifications tab
-7. Posts:
-  * Description
-  * Photo(s)
-  * Comments
-  * Tag people in comments ??
-8. Stories??
+5. Add Post form
+
+## TODO
+
+1. Posts:
+    * Multiple photos
+    * Comments
+    * Tag people in comments
+2. Notifications tab
+3. Stories
