@@ -2,6 +2,8 @@
 
 Clone of Instagram made using MERN stack. [Website link.](https://instagram-clone-raman.vercel.app)
 
+For testing, use the credentials: {username: user, password: user} to login without creating a new account. Login session expires after one day.
+
 *Note: Uploading pictures is not functional on the current vercel deployment. Working on a fix.*
 
 ## Features 
@@ -23,4 +25,5 @@ Clone of Instagram made using MERN stack. [Website link.](https://instagram-clon
     * Comments
     * Tag people in comments
 2. Notifications tab
-3. Stories
+3. Like a post
+4. Stories
