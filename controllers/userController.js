@@ -1,27 +1,7 @@
 const User = require('../models/user');
 const Post = require('../models/post');
-const mongoose = require('mongoose')
-const multer = require('multer')
-const { GridFsStorage } = require('multer-gridfs-storage');
-const crypto = require('crypto')
-const path = require('path')
 const jwt = require('jsonwebtoken');
 const async = require('async');
-require('dotenv').config()
-
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true
-});
-const connection = mongoose.connection
-
-let gfs;
-connection.once('open', () => {
-  gfs = new mongoose.mongo.GridFSBucket(connection.db, {
-    bucketName: 'images'
-  })
-});
 
 exports.userDetail = (req, res, next) => {
   async.parallel({
@@ -49,59 +29,6 @@ exports.userDetail = (req, res, next) => {
   );
 };
 
-const storage = new GridFsStorage({
-  url: process.env.MONGO_URI,
-  options: { useUnifiedTopology: true },
-  file: (req, file) => {
-    return new Promise((resolve, reject) => {
-      crypto.randomBytes(16, (err, buf) => {
-        if (err) {
-          return reject(err);
-        }
-
-        const fileName = buf.toString('hex') + path.extname(file.originalname)
-        const fileInfo = {
-          filename: fileName,
-          bucketName: 'images'
-        };
-
-        resolve(fileInfo)
-      });
-    });
-  }
-});
-
-const store = multer({
-  storage,
-  limits: { fileSize: 20000000 },
-  fileFilter: function(req, file, cb) {
-    checkFileType(file, cb);
-  }
-})
-
-function checkFileType(file, cb) {
-  const filetypes = /jpeg|jpg|png|avif|gif/;
-  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = filetypes.test(file.mimetype);
-  if (mimetype && extname) return cb(null, true);
-
-  cb('filetype')
-}
-
-exports.uploadMiddleware = (req, res, next) => {
-  const upload = store.single('image');
-  upload(req, res, function(err) {
-    if (err instanceof multer.MulterError) {
-      return res.status(400).send('File too large');
-    } else if (err) {
-      console.log(err)
-      if (err === 'filetype') return res.status(400).send('Image files only')
-      return res.sendStatus(500);
-    } 
-    next();
-  });
-}
-
 exports.editUserProfile = async (req, res) => {
   let decoded;
   try {
@@ -120,17 +47,16 @@ exports.editUserProfile = async (req, res) => {
     })
   }
 
-  const { file } = req;
+  const { imageUrl } = req;
 
   const user = await User.findOne({ handle: req.params.handle }).exec();
   let pfp, bio;
   pfp = user.pfp;
   bio = user.bio;
 
-  if (file) {
+  if (imageUrl) {
     try {
-      const { id } = file;
-      user.pfp = id;
+      user.pfp = imageUrl;
       pfp = user.pfp;
       await user.save();
     } catch(err) {
@@ -159,28 +85,6 @@ exports.editUserProfile = async (req, res) => {
   })
 }
 
-exports.getImage = (req, res) => {
-  const id = req.params.id
-  if (!id || id === undefined || id === 'undefined') {
-    return res.status(400).send({
-      success: false,
-      message: 'No image id'
-    })
-  }
-
-  const _id = new mongoose.Types.ObjectId(id);
-
-  gfs.find({ _id }).toArray((err, files) => {
-    if (!files || files.length === 0) {
-      return res.status(400).send({
-        success: false,
-        message: 'No files exist'
-      })
-    }
-    gfs.openDownloadStream(_id).pipe(res)
-  })
-}
-
 exports.createPost = async (req, res) => {
   let decoded;
   try {
@@ -199,12 +103,11 @@ exports.createPost = async (req, res) => {
     })
   }
 
-  const { file } = req;
-  const { id } = file;
+  const { imageUrl } = req;
   const caption = req.body.caption;
 
   const post = {
-    image: id,
+    image: imageUrl,
     caption
   }
 
