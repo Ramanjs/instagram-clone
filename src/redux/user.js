@@ -21,28 +21,34 @@ if (initialState.token && initialState.handle) {
   initialState.loggedIn = true;
 }
 
-export const login = createAsyncThunk('user', async (creds, thunkAPI) => {
+export const login = createAsyncThunk('user', async (data, thunkAPI) => {
   fetch(baseUrl + '/auth/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      handle: creds.username,
-      password: creds.password
+      handle: data.username,
+      password: data.password
     })
   })
-    .then(response => {
-      if (!response.ok) {
-        throw Error('Error occured while logging in')
+    .then(async res => {
+      if (!res.ok) {
+        res = await res.json()
+        throw new Error(res.message)
       }
-      return response;
+      return res.json()
     })
-    .then(response => response.json())
-    .then(response => {
-      thunkAPI.dispatch(loadToken(response.token))
+    .then(res=> {
+      thunkAPI.dispatch(loadToken(res.token))
       thunkAPI.dispatch(loggedIn(true))
-      thunkAPI.dispatch(setHandle(response.handle))
+      thunkAPI.dispatch(setHandle(res.handle))
+    })
+    .catch(err => {
+      data.setError(err.message)
+    })
+    .finally(() => {
+      data.setLoading(false)
     })
 });
 

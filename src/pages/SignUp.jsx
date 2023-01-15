@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import instagram from '../images/instagram.png';
+import ErrorMessage from '../components/Error';
+import Spinner from '../components/Spinner';
 import baseUrl from '../baseUrl';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -7,10 +9,14 @@ const SignUp = () => {
   const [fullName, setFullName] = useState('')
   const [userName, setUserName] = useState('')
   const [passwd, setPasswd] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
 
   const navigate = useNavigate()
 
   const handleSubmit = (e) => {
+    setError('')
+    setLoading(true)
     e.preventDefault();
     fetch(baseUrl + '/auth/signup', {
       method: 'POST',
@@ -23,14 +29,17 @@ const SignUp = () => {
         password: passwd
       })
     })
-      .then(response => {
-        if (!response.ok) {
-          throw Error('Error occured while signing up')
+      .then(async res => {
+        if (!res.ok) {
+          res = await res.json()
+          throw new Error(res.message)
+        } else {
+          navigate('/login');
         }
-        return navigate('/login');
       })
       .catch(err => {
-        console.log(err)
+        setTimeout(() => setError(err.message), 2000)
+        setTimeout(() => setLoading(false), 2000)
       })
   }
 
@@ -42,7 +51,9 @@ const SignUp = () => {
           <input type="text" className="w-full border-2 border-gray-200 p-2 focus:border-gray-300 focus:outline-none" placeholder="Full Name" onChange={e => setFullName(e.target.value)} value={fullName} required/>
           <input type="text" className="w-full border-2 border-gray-200 p-2 focus:border-gray-300 focus:outline-none" placeholder="Username" onChange={e => setUserName(e.target.value)} value={userName} required/>
           <input type="text" className="w-full border-2 border-gray-200 p-2 focus:border-gray-300 focus:outline-none" placeholder="Password" onChange={e => setPasswd(e.target.value)} value={passwd} required/>
-          <input type="submit" className="w-full bg-blue-400 hover:bg-blue-500 text-white font-bold rounded py-2 cursor-pointer mt-2" value="Sign Up"/>
+          {error && <ErrorMessage message={error}/>}
+          {!loading && <input type="submit" className="w-full bg-blue-400 hover:bg-blue-500 text-white font-bold rounded py-2 cursor-pointer mt-2" value="Sign Up"/>}
+          {loading && <Spinner />}
         </form>
         <p>Already have an account? <Link to="/login" className="text-blue-500 font-bold">Log In</Link></p>
       </div>
