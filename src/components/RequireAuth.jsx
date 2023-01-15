@@ -17,8 +17,8 @@ const RequireAuth = (props) => {
         token: user.token
       }
       dispatch(fetchUserDetails(creds));
-      dispatch(fetchUserPosts(creds.handle));
-      dispatch(fetchSuggested(creds.handle));
+      dispatch(fetchUserPosts(creds));
+      dispatch(fetchSuggested(creds));
     }
   }, [])
 
