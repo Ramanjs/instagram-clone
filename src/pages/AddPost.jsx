@@ -27,7 +27,7 @@ const AddPost = () => {
         body: fd
       })
       .then(() => {
-        dispatch(fetchUserPosts(handle))
+        dispatch(fetchUserPosts({handle, token}))
         setFile(null)
         navigate('/profile')
       })

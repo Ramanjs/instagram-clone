@@ -1,9 +1,8 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
 import LogoutIcon from '@mui/icons-material/Logout';
 import { logout as logoutAction } from '../redux/user';
-import baseUrl from '../baseUrl'
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 

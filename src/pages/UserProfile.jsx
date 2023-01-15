@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react'
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import { Link, useParams, useNavigate } from 'react-router-dom'
+import {logout} from '../redux/user'
 import baseUrl from '../baseUrl'
 
 const UserProfile = () => {
@@ -9,6 +10,7 @@ const UserProfile = () => {
   const myHandle = useSelector(state => state.user.handle)
   const navigate = useNavigate()
   const token = useSelector(state => state.user.token)
+  const dispatch = useDispatch()
 
   const [name, setName] = useState('')
   const [pfp, setPfp] = useState('')
@@ -31,37 +33,52 @@ const UserProfile = () => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       },
     })
-      .then(response => {
-        if (!response.ok) {
-          throw Error('ofo');
+      .then(async res=> {
+        if (!res.ok) {
+          res = await res.json()
+          throw new Error(res.message);
         }
-        return response;
+        return res.json();
       })
-      .then(response => response.json())
-      .then(response => {
-        setName(response.data.name)
-        setBio(response.data.bio)
-        setPfp(response.data.pfp)
-        setFollowers(response.data.followers)
-        setFollowing(response.data.following)
+      .then(res=> {
+        setName(res.data.name)
+        setBio(res.data.bio)
+        setPfp(res.data.pfp)
+        setFollowers(res.data.followers)
+        setFollowing(res.data.following)
+      })
+      .catch(err => {
+        if (err.message === 'jwt expired') {
+          dispatch(logout())
+        }
       })
   }, [])
 
   useEffect(() => {
     fetch(baseUrl + '/users/' + handle + '/posts', {
       method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
     })
-      .then(response => {
-        if (!response.ok) {
-          throw Error('ofo');
+      .then(async res=> {
+        if (!res.ok) {
+          res = await res.json()
+          throw new Error(res.message);
         }
-        return response;
+        return res.json();
       })
-      .then(response => response.json())
-      .then(response => {
-        setPosts(response.message)
+      .then(res=> {
+        setPosts(res.message)
+      })
+      .catch(err => {
+        if (err.message === 'jwt expired') {
+          dispatch(logout())
+        }
       })
   }, [])
 
@@ -73,13 +90,21 @@ const UserProfile = () => {
     fetch(baseUrl + '/users/' + handle + '/followers', {
       method: 'POST',
       headers: {
-        'Authorization': 'Bearer ' + token
+        'Authorization': `Bearer ${token}`
       }
     })
-      .then(res => res.json())
+      .then(async res => {
+        if (!res.ok) {
+          res = await res.json()
+          throw new Error(res.message)
+        }
+        return res.json()
+      })
       .then(() => setIsFollowing(true))
       .catch((err) => {
-        console.log(err)
+        if (err.message === 'jwt expired') {
+          dispatch(logout())
+        }
       })
   }
 

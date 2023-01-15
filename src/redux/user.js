@@ -52,7 +52,7 @@ export const login = createAsyncThunk('user', async (data, thunkAPI) => {
     })
 });
 
-export const fetchUserDetails = createAsyncThunk('user', (creds, thunkAPI) => {
+export const fetchUserDetails = createAsyncThunk('user', async (creds, thunkAPI) => {
   fetch(baseUrl + '/users/' + creds.handle, {
     method: 'GET',
     headers: {
@@ -60,62 +60,73 @@ export const fetchUserDetails = createAsyncThunk('user', (creds, thunkAPI) => {
       'Authorization': 'Bearer ' + creds.token
     },
   })
-    .then(response => {
-      if (!response.ok) {
-        throw Error('ofo');
+    .then(async res=> {
+      if (!res.ok) {
+        res = await res.json()
+        throw new Error(res.message);
       }
-      return response;
+      return res.json();
     })
-    .then(response => response.json())
-    .then(response => {
-      thunkAPI.dispatch(setName(response.data.name));
-      thunkAPI.dispatch(setBio(response.data.bio));
-      thunkAPI.dispatch(setPfp(response.data.pfp));
-      thunkAPI.dispatch(setFollowers(response.data.followers))
-      thunkAPI.dispatch(setFollowing(response.data.following))
+    .then(res=> {
+      thunkAPI.dispatch(setName(res.data.name));
+      thunkAPI.dispatch(setBio(res.data.bio));
+      thunkAPI.dispatch(setPfp(res.data.pfp));
+      thunkAPI.dispatch(setFollowers(res.data.followers))
+      thunkAPI.dispatch(setFollowing(res.data.following))
       thunkAPI.dispatch(setProfileLoaded(true));
+    })
+    .catch(err => {
+      if (err.message === 'jwt expired') {
+        thunkAPI.dispatch(logout())
+      }
     })
 })
 
-export const fetchUserPosts = createAsyncThunk('user', (creds, thunkAPI) => {
+export const fetchUserPosts = createAsyncThunk('user', async (creds, thunkAPI) => {
   fetch(baseUrl + '/users/' + creds.handle + '/posts', {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${creds.token}`
     }
   })
-    .then(response => {
-      if (!response.ok) {
-        throw Error('ofo');
+    .then(async res=> {
+      if (!res.ok) {
+        res = await res.json()
+        throw new Error(res.message);
       }
-      return response;
+      return res.json();
     })
-    .then(response => response.json())
-    .then(response => {
-      thunkAPI.dispatch(setPosts(response.message));
+    .then(res=> {
+      thunkAPI.dispatch(setPosts(res.message));
+    })
+    .catch(err => {
+      if (err.message === 'jwt expired') {
+        thunkAPI.dispatch(logout())
+      }
     })
 })
 
-export const fetchFeed = createAsyncThunk('user', () => {
-
-})
-
-export const fetchSuggested = createAsyncThunk('user', (creds, thunkAPI) => {
+export const fetchSuggested = createAsyncThunk('user', async (creds, thunkAPI) => {
   fetch(baseUrl + '/users/' + creds.handle + '/suggested', {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${creds.token}`
     }
   })
-    .then(response => {
-      if (!response.ok) {
-        throw Error('ofo');
+    .then(async res=> {
+      if (!res.ok) {
+        res = await res.json()
+        throw new Error(res.message);
       }
-      return response;
+      return res.json();
     })
-    .then(response => response.json())
-    .then(response => {
-      thunkAPI.dispatch(setSuggested(response.message));
+    .then(res=> {
+      thunkAPI.dispatch(setSuggested(res.message));
+    })
+    .catch(err => {
+      if (err.message === 'jwt expired') {
+        thunkAPI.dispatch(logout())
+      }
     })
 })
 

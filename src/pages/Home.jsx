@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {logout} from '../redux/user';
 import baseUrl from '../baseUrl';
 import Post from '../components/Post';
 
@@ -7,6 +8,7 @@ const Home = () => {
   const [posts, setPosts] = useState([])
   const handle = useSelector(state => state.user.handle)
   const token = useSelector(state => state.user.token)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     fetch(baseUrl + '/users/' + handle + '/feed', {
@@ -15,20 +17,21 @@ const Home = () => {
         'Authorization': `Bearer ${token}`
       }
     })
-      .then(response => {
-        if (!response.ok) {
-          throw Error(response.message);
+      .then(async res=> {
+        if (!res.ok) {
+          res = await res.json()
+          throw new Error(res.message);
         }
-        return response;
+        return res.json();
       })
-      .then(response => response.json())
-      .then(response => {
-        setPosts(response.data);
+      .then(res=> {
+        setPosts(res.data);
       })
-      .catch(response => {
-        console.log(response.message)
+      .catch(err=> {
+        if (err.message === 'jwt expired') {
+          dispatch(logout())
+        } 
       })
-
   }, [])
 
   return (
