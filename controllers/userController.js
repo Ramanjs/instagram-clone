@@ -34,7 +34,6 @@ exports.editUserProfile = async (req, res) => {
   try {
     decoded = jwt.verify(req.token, 'secretkey');
   } catch(err) {
-      console.log(err)
       return res.status(500).json({
         success: false,
         message: 'Internal server error occured'
@@ -90,7 +89,6 @@ exports.createPost = async (req, res) => {
   try {
     decoded = jwt.verify(req.token, 'secretkey');
   } catch(err) {
-      console.log(err)
       return res.status(500).json({
         success: false,
         message: 'Internal server error occured'
@@ -213,7 +211,6 @@ exports.addFollower = async (req, res) => {
   try {
     decoded = jwt.verify(req.token, 'secretkey');
   } catch(err) {
-      console.log(err)
       return res.status(500).json({
         success: false,
         message: 'Internal server error occured'
@@ -256,7 +253,6 @@ exports.getFeed = async (req, res) => {
   try {
     decoded = jwt.verify(req.token, 'secretkey');
   } catch(err) {
-      console.log(err)
       return res.status(500).json({
         success: false,
         message: 'Internal server error occured'
@@ -291,14 +287,12 @@ exports.getFeed = async (req, res) => {
       })
     })
 
-    console.log(posts)
 
     res.status(200).json({
       success: true,
       data: posts
     })
   } catch(err) {
-    console.log(err)
     res.status(500).json({
       success: false,
       message: err
