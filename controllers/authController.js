@@ -81,12 +81,31 @@ exports.verifyToken = (req, res, next) => {
   if (typeof bearerHeader !== 'undefined') {
     const bearer = bearerHeader.split(' ');
     const bearerToken = bearer[1];
-    req.token = bearerToken;
-    next();
+
+    try {
+      let decoded = jwt.verify(bearerToken, 'secretkey');
+      req.decoded = decoded;
+      next();
+    } catch(err) {
+      res.status(401).json({
+        success: false,
+        message: err
+      })
+    }
   } else {
     res.status(403).json({
       success: false,
       message: 'Bearer undefined'
     })
   }
+}
+
+exports.verifyUser = (req, res, next) => {
+  if (req.decoded.handle !== req.params.handle) {
+    return res.status(403).json({
+      success: false,
+      message: 'Forbidden'
+    })
+  }
+  next()
 }

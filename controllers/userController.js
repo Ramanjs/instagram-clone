@@ -30,22 +30,6 @@ exports.userDetail = (req, res, next) => {
 };
 
 exports.editUserProfile = async (req, res) => {
-  let decoded;
-  try {
-    decoded = jwt.verify(req.token, 'secretkey');
-  } catch(err) {
-      return res.status(500).json({
-        success: false,
-        message: 'Internal server error occured'
-      })
-  }
-  if (decoded.handle !== req.params.handle) {
-    return res.status(403).json({
-      success: false,
-      message: 'Forbidden'
-    })
-  }
-
   const { imageUrl } = req;
 
   const user = await User.findOne({ handle: req.params.handle }).exec();
@@ -85,22 +69,6 @@ exports.editUserProfile = async (req, res) => {
 }
 
 exports.createPost = async (req, res) => {
-  let decoded;
-  try {
-    decoded = jwt.verify(req.token, 'secretkey');
-  } catch(err) {
-      return res.status(500).json({
-        success: false,
-        message: 'Internal server error occured'
-      })
-  }
-  if (decoded.handle !== req.params.handle) {
-    return res.status(403).json({
-      success: false,
-      message: 'Forbidden'
-    })
-  }
-
   const { imageUrl } = req;
   const caption = req.body.caption;
 
@@ -137,13 +105,6 @@ exports.createPost = async (req, res) => {
 
 exports.getPosts = (req, res, next) => {
   const handle = req.params.handle;
-
-  if (!handle || handle === undefined) {
-    return res.status(400).send({
-      success: false,
-      message: 'No handle specified'
-    })
-  }
 
   User.findOne({ handle })
     .populate('posts')
@@ -207,15 +168,6 @@ exports.getSuggested = (req, res, next) => {
 }
 
 exports.addFollower = async (req, res) => {
-  let decoded;
-  try {
-    decoded = jwt.verify(req.token, 'secretkey');
-  } catch(err) {
-      return res.status(500).json({
-        success: false,
-        message: 'Internal server error occured'
-      })
-  }
 
   if (decoded.handle === req.params.handle) {
     return res.status(403).json({
@@ -249,23 +201,6 @@ exports.addFollower = async (req, res) => {
 }
 
 exports.getFeed = async (req, res) => {
-  let decoded;
-  try {
-    decoded = jwt.verify(req.token, 'secretkey');
-  } catch(err) {
-      return res.status(500).json({
-        success: false,
-        message: 'Internal server error occured'
-      })
-  }
-
-  if (decoded.handle !== req.params.handle) {
-    return res.status(403).json({
-      success: false,
-      message: 'Forbidden'
-    })
-  }
-
   try {
     const user = await User.findOne({ handle: req.params.handle })
       .populate({
@@ -286,7 +221,6 @@ exports.getFeed = async (req, res) => {
         })
       })
     })
-
 
     res.status(200).json({
       success: true,

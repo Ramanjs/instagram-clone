@@ -11,20 +11,20 @@ const getSuggested = userController.getSuggested
 const getFeed = userController.getFeed
 
 const authController = require('../controllers/authController');
+const verifyUser = authController.verifyUser;
 const { upload } = require('../utils/upload')
 const { uploadImage } = require('../utils/upload')
-const verifyToken = authController.verifyToken;
 
 router.get('/:handle', userDetail);
-router.post('/:handle/profile', verifyToken, upload.single('image'), uploadImage, editUserProfile);
+router.post('/:handle/profile', verifyUser, upload.single('image'), uploadImage, editUserProfile);
 
 router.get('/:handle/posts', getPosts);
-router.post('/:handle/posts', verifyToken, upload.single('image'), uploadImage, createPost);
+router.post('/:handle/posts', verifyUser, upload.single('image'), uploadImage, createPost);
 
-router.post('/:handle/followers', verifyToken, addFollower);
+router.post('/:handle/followers', addFollower);
 
-router.get('/:handle/suggested', getSuggested);
+router.get('/:handle/suggested', verifyUser, getSuggested);
 
-router.get('/:handle/feed', verifyToken, getFeed);
+router.get('/:handle/feed', verifyUser, getFeed);
 
 module.exports = router;
