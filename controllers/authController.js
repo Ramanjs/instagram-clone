@@ -9,9 +9,9 @@ exports.signup = async (req, res, next) => {
     }
 
     if (user) {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
-        message: 'Handle already exists'
+        message: 'Username already exists. Please choose a different username.'
       })
     }
 
@@ -51,7 +51,6 @@ exports.login = async (req, res) => {
         message: 'Invalid username',
       })
     } else if (!(await user.isValidPassword(req.body.password))) {
-      console.log(req.body.password)
       res.status(404).json({
         success: false,
         message: 'Invalid password',
